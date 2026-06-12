@@ -18,6 +18,7 @@ class GalerisTable
             ->columns([
                 ImageColumn::make('gambar')
                     ->label('Foto')
+                    ->disk('public')
                     ->square()
                     ->size(80),
                 TextColumn::make('judul')

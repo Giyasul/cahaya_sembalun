@@ -15,6 +15,7 @@ class GaleriForm
                 FileUpload::make('gambar')
                     ->label('Foto')
                     ->image()
+                    ->disk('public')
                     ->directory('galeri')
                     ->imagePreviewHeight('200')
                     ->required()
