@@ -9,6 +9,3 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Proses booking
 Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
-Route::get('/giyas-test', function () {
-    return 'TES BERHASIL';
-});
