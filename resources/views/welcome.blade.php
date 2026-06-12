@@ -83,10 +83,6 @@
             transition: padding .3s;
         }
 
-        nav.scrolled {
-            padding: 12px 5%;
-        }
-
         .nav-logo {
             font-family: 'Playfair Display', serif;
             color: var(--emas);
@@ -473,7 +469,6 @@
 
         .galeri-grid {
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
             grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
             gap: 10px;
             margin-top: 40px;
@@ -536,88 +531,6 @@
 
         .galeri-item:hover::before {
             transform: translate(-50%, -50%) scale(1);
-        }
-
-        /* Lightbox */
-        .lightbox {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, .92);
-            z-index: 9999;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .lightbox.active {
-            display: flex;
-        }
-
-        .lightbox-img {
-            max-width: 90vw;
-            max-height: 85vh;
-            object-fit: contain;
-            border-radius: 8px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, .5);
-        }
-
-        .lightbox-close {
-            position: absolute;
-            top: 20px;
-            right: 28px;
-            color: #fff;
-            font-size: 2.2rem;
-            cursor: pointer;
-            background: none;
-            border: none;
-            line-height: 1;
-            opacity: .7;
-            transition: opacity .2s;
-        }
-
-        .lightbox-close:hover {
-            opacity: 1;
-        }
-
-        .lightbox-caption {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: rgba(255, 255, 255, .7);
-            font-size: .9rem;
-            letter-spacing: 1px;
-        }
-
-        .lightbox-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, .15);
-            border: none;
-            color: #fff;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            font-size: 1.4rem;
-            cursor: pointer;
-            transition: background .2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .lightbox-nav:hover {
-            background: rgba(255, 255, 255, .25);
-        }
-
-        .lightbox-prev {
-            left: 20px;
-        }
-
-        .lightbox-next {
-            right: 20px;
         }
 
         /* ── FASILITAS ── */
@@ -1482,40 +1395,6 @@
             box-shadow: 1px 1px 0 #1a1a1a;
         }
 
-        /* ── BACK TO TOP ── */
-        .back-top {
-            position: fixed;
-            bottom: 100px;
-            right: 20px;
-            z-index: 998;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: var(--hijau);
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            box-shadow: 0 4px 16px rgba(45, 90, 39, .3);
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity .3s, transform .3s;
-            pointer-events: none;
-        }
-
-        .back-top.show {
-            opacity: 1;
-            transform: translateY(0);
-            pointer-events: all;
-        }
-
-        .back-top:hover {
-            background: var(--hijau2);
-        }
-
         /* ── ANIMATIONS ── */
         @keyframes fadeUp {
             from {
@@ -1605,17 +1484,8 @@
                 grid-template-columns: repeat(2, 1fr);
             }
 
-            .ig-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-
             .galeri-grid {
                 grid-template-columns: repeat(2, 1fr);
-            }
-
-            .galeri-item.big {
-                grid-column: span 1;
-                grid-row: span 1;
             }
         }
 
@@ -1667,10 +1537,6 @@
                 grid-template-columns: 1fr;
             }
 
-            .ig-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
             .hero-stats {
                 flex-wrap: wrap;
             }
@@ -1707,10 +1573,6 @@
 
             .galeri-grid {
                 grid-template-columns: repeat(3, 1fr);
-            }
-
-            .ig-grid {
-                grid-template-columns: repeat(2, 1fr);
             }
 
             .wa-float-wrap {
@@ -1831,17 +1693,21 @@
         <p class="section-sub" style="color:rgba(255,255,255,.6)">
             Foto langsung dari Cahaya Sembalun.
         </p>
-        <div class="galeri-grid" id="galeriGrid"></div>
-    </section>
 
-    <!-- Lightbox -->
-    <div class="lightbox" id="lightbox" onclick="closeLightboxOutside(event)">
-        <button class="lightbox-close" onclick="closeLightbox()">✕</button>
-        <button class="lightbox-nav lightbox-prev" onclick="navLightbox(-1)">‹</button>
-        <img class="lightbox-img" id="lightboxImg" src="" alt="" />
-        <button class="lightbox-nav lightbox-next" onclick="navLightbox(1)">›</button>
-        <div class="lightbox-caption" id="lightboxCaption"></div>
-    </div>
+        <div class="galeri-grid">
+            @forelse($galeris as $g)
+                <div class="galeri-item reveal">
+                    <img src="{{ asset('storage/' . $g->gambar) }}" alt="{{ $g->judul ?? 'Cahaya Sembalun' }}"
+                        loading="lazy">
+                    <div class="galeri-overlay">
+                        <span>{{ $g->judul ?? '' }}</span>
+                    </div>
+                </div>
+            @empty
+                <p style="color:rgba(255,255,255,.5)">Belum ada foto.</p>
+            @endforelse
+        </div>
+    </section>
 
     <!-- FASILITAS -->
     <section id="fasilitas">
@@ -2560,127 +2426,6 @@
             threshold: 0.1
         });
         document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-        // ── Lightbox Galeri ──
-        const galleryImages = [{
-                src: 'gambar/galeri 1.jpeg'
-            },
-            {
-                src: 'gambar/galeri 2.jpeg'
-            },
-            {
-                src: 'gambar/galeri3.jpeg'
-            },
-            {
-                src: 'gambar/galeri4.jpeg'
-            },
-            {
-                src: 'gambar/galeri5.jpeg'
-            },
-            {
-                src: 'gambar/galeri6.jpeg'
-            },
-            {
-                src: 'gambar/galeri7.jpeg'
-            },
-            {
-                src: 'gambar/galeri8.jpeg'
-            },
-            {
-                src: 'gambar/galeri9.jpeg'
-            },
-            {
-                src: 'gambar/galeri10.jpeg'
-            },
-            {
-                src: 'gambar/galeri11.jpeg'
-            },
-            {
-                src: 'gambar/galeri12.jpeg'
-            },
-            {
-                src: 'gambar/galeri13.jpeg'
-            },
-            {
-                src: 'gambar/galeri14.jpeg'
-            },
-            {
-                src: 'gambar/galeri15.jpeg'
-            },
-            {
-                src: 'gambar/galeri16.jpeg'
-            },
-            {
-                src: 'gambar/galeri17.jpeg'
-            },
-            {
-                src: 'gambar/galeri18.jpeg'
-            },
-            {
-                src: 'gambar/Camping Area.jpeg'
-            },
-            {
-                src: 'gambar/Kamar Kecil.jpeg'
-            },
-            {
-                src: 'gambar/Kamar Keluarga.webp'
-            },
-            {
-                src: 'gambar/Kamar Segitiga.jpeg'
-            },
-            {
-                src: 'gambar/pembukaan.jpeg'
-            },
-            {
-                src: 'gambar/tentangkami.jpeg'
-            },
-        ];
-
-        const grid = document.getElementById('galeriGrid');
-        galleryImages.forEach((img, i) => {
-            grid.innerHTML += `
-    <div class="galeri-item reveal reveal-delay-${i % 4}" onclick="openLightbox(${i})">
-      <img src="${img.src}" alt="Sabar Sebentar" loading="lazy" />
-    </div>`;
-        });
-
-        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-        let currentLightbox = 0;
-
-        function openLightbox(index) {
-            currentLightbox = index;
-            updateLightbox();
-            document.getElementById('lightbox').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeLightbox() {
-            document.getElementById('lightbox').classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        function closeLightboxOutside(e) {
-            if (e.target === document.getElementById('lightbox')) closeLightbox();
-        }
-
-        function navLightbox(dir) {
-            currentLightbox = (currentLightbox + dir + galleryImages.length) % galleryImages.length;
-            updateLightbox();
-        }
-
-        function updateLightbox() {
-            const img = galleryImages[currentLightbox];
-            document.getElementById('lightboxImg').src = img.src;
-            document.getElementById('lightboxCaption').textContent = '(' + (currentLightbox + 1) + '/' + galleryImages
-                .length + ')';
-        }
-
-        document.addEventListener('keydown', e => {
-            if (e.key === 'Escape') closeLightbox();
-            if (e.key === 'ArrowLeft') navLightbox(-1);
-            if (e.key === 'ArrowRight') navLightbox(1);
-        });
 
         // ── FAQ Toggle ──
         function toggleFaq(item) {
